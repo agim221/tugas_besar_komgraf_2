@@ -7,48 +7,55 @@ public class OpenDoorScript : MonoBehaviour
 {
     public GameObject inventory;
     public GameObject text;
+    public GameObject panel; 
+    public GameObject used;
     public Animator anim;
-    public bool is_locked;
+    public bool isLocked;
     public string state;
-    private bool is_open = false;
-    private bool player_in_zone;
-
-    void start() {
-       
-    }
+    private bool isOpen = false;
+    private bool playerInZone;
 
     void OpenDoor() {
-        print(state);
         anim.Play(state, 0, 0f);
-        is_open = true;
+        isOpen = true;
     }
 
     void OpenLock() {
-        // if(key == "kunci") {
-        //     OpenDoor();
-        //     is_locked = false;
-        // }
+        GameObject temp  = GameObject.FindWithTag("Equiped");
+        if(temp != null) {
+            Match match = Regex.Match(temp.transform.name, @"(Kunci)");
+            if(match.Success && match.Value == "Kunci"){
+                foreach (Transform child in panel.transform) {
+                    if (child.name == temp.name) {
+                        DestroyImmediate(child.gameObject);
+                    }
+                }
+                DestroyImmediate(temp);
+                used.SetActive(false);
+                OpenDoor();
+            }
+        }
     }
    
     void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
-            player_in_zone = true;
-            // text.SetActive(true);
+            playerInZone = true;
+            text.SetActive(true);
         }
     }
 
     void OnTriggerExit(Collider other) {
         if (other.tag == "Player") {
-            player_in_zone = false;
-            // text.SetActive(false);
+            playerInZone = false;
+            text.SetActive(false);
         }
     }
     
     void Update() {
-        if (player_in_zone) {
-            if (Input.GetKeyDown(KeyCode.G) && !is_open && is_locked) {
+        if (playerInZone) {
+            if (Input.GetKeyDown(KeyCode.G) && !isOpen && isLocked) {
                 OpenLock();
-            } else if(Input.GetKeyDown(KeyCode.G) && !is_open) {
+            } else if(Input.GetKeyDown(KeyCode.G) && !isOpen) {
                 OpenDoor();
             }
         }
