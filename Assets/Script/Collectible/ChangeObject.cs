@@ -7,7 +7,6 @@ public class ChangeObject : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject inventory;
-    private bool player_in_zone = false;
     private GameObject temp;
     private int item_active;
     public GameObject slot;

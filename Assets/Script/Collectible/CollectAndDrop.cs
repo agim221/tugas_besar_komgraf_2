@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
+
 public class CollectAndDrop : MonoBehaviour
 {
+    AudioManager audioManager;
+
+    public void Awake() {
+        audioManager = GameObject.FindWithTag("Audio").GetComponent<AudioManager>();
+    }
     public GameObject myObject;
     public GameObject inventory;
     private bool isCollected = false;
@@ -16,7 +22,7 @@ public class CollectAndDrop : MonoBehaviour
     private GameObject picture;
 
     void start() {
-        myObject.GetComponent<Rigidbody>().isKinematic = false;
+        myObject.GetComponent<Rigidbody>().isKinematic = true;
         picture = new GameObject();
         playerInZone = false;
     }
@@ -39,6 +45,7 @@ public class CollectAndDrop : MonoBehaviour
         myObject.transform.tag = "Untagged";
         isCollected = false;
         myObject.transform.SetParent(inventory.transform.parent.gameObject.transform.parent);
+        audioManager.PlaySFX(audioManager.pickUp);
     }
 
     void Collect() {
@@ -50,7 +57,7 @@ public class CollectAndDrop : MonoBehaviour
         myObject.transform.rotation = inventory.transform.rotation;
         myObject.GetComponent<MeshCollider>().enabled = false;
         myObject.transform.localRotation = Quaternion.Euler(0, -90, 0);
-        myObject.transform.localPosition = new Vector3(0.08f, -0.123f, 0.4f);
+        myObject.transform.localPosition = new Vector3(0.25f, -0.3f, 1f);
 
         if(GameObject.FindWithTag("Equiped")) {
             equip = false;
@@ -101,6 +108,7 @@ public class CollectAndDrop : MonoBehaviour
         originalName = myObject.transform.name;
         myObject.name = myObject.name + " - " + invent_index.ToString();
         isCollected = true;
+        audioManager.PlaySFX(audioManager.pickUp);
     }
 
     void OnTriggerEnter(Collider other) {

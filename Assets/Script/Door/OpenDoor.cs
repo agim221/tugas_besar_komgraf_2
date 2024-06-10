@@ -5,7 +5,12 @@ using System.Text.RegularExpressions;
 
 public class OpenDoorScript : MonoBehaviour
 {
-    public GameObject inventory;
+    AudioManager audioManager;
+
+    public void Awake() {
+        audioManager = GameObject.FindWithTag("Audio").GetComponent<AudioManager>();
+    }
+    
     public GameObject text;
     public GameObject panel; 
     public GameObject used;
@@ -16,6 +21,7 @@ public class OpenDoorScript : MonoBehaviour
     private bool playerInZone;
 
     void OpenDoor() {
+        audioManager.PlaySFX(audioManager.openDoor);
         anim.Play(state, 0, 0f);
         isOpen = true;
     }
