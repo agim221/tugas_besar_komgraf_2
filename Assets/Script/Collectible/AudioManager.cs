@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip openDoor;
     public AudioClip walking;
     public AudioClip sucessRitual;
+    public AudioClip gameOver;
 
     private void Start() {
         PlayMusic(background, true);

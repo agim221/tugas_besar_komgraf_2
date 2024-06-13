@@ -21,7 +21,7 @@ public class GhostController : MonoBehaviour
     
     void Update() {
         if (playerInZone) {
-             SceneManager.LoadSceneAsync(0);
+             SceneManager.LoadSceneAsync(1);
         }
     }
 }

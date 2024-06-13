@@ -17,6 +17,7 @@ public class PutObject : MonoBehaviour
     private GameObject Object;
     private bool playerInZone = false;
     public int count = 0;
+    public GameObject panel;
 
     private void OnTriggerEnter(Collider other) {
         if (other.tag == "Player") {
@@ -51,9 +52,17 @@ public class PutObject : MonoBehaviour
 
                 count++;
                 audioManager.PlaySFX(audioManager.pickUp);
-                if (count == 4) {
+
+                foreach (Transform child in panel.transform) {
+                    match = Regex.Match(child.name, @"^\w+");
+                    if (child.name == Object.name) {
+                        DestroyImmediate(child.gameObject);
+                }
+        }
+
+                if(count == 4) {
                     anim.Play(state, 0, 0f);
-                    audioManager.PlayMusic(audioManager.sucessRitual, false);
+                    audioManager.PlaySFX(audioManager.openDoor);
                 }
             }
         }
